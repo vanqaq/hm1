@@ -43,7 +43,7 @@ for hidden_size in hidden__size_list:
             
             train_iter = Mydataloader(x_train,y_train,batch_size)
             test_iter = Mydataloader(x_test,y_test,batch_size) 
-            network = twolayers_mlp(num_input,num_hidden,num_output,lr,l2)
+            network = twolayers_mlp(input_size,hidden_size,output_size,lr,l2)
             
             ce_train = []
             ce_test = []
