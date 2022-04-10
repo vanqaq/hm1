@@ -4,7 +4,7 @@ import numpy as np
 from mlxtend.data import loadlocal_mnist
 from Mydataloader import MydataLoader
 from model import twolayers_mlp
-from loss import CrossEntropyLoss
+from loss import SoftmaxLossLayer
 from validation import validation
 import matplotlib 
 matplotlib.use('Agg')
