@@ -5,8 +5,8 @@ import numpy as np
 
 class linear(object):
     def __init__(self, input_size, output_size):
-        self.w = cp.random.normal(loc = 0, scale = 0.01, size = (input_size, output_size))
-        self.b = cp.zeros((1, output_size))
+        self.w = np.random.normal(loc = 0, scale = 0.01, size = (input_size, output_size))
+        self.b = np.zeros((1, output_size))
     def forward(self, x):
         return x@self.w+self.b
     def __call__(self,x):
@@ -31,7 +31,7 @@ class twolayers_mlp(object):
         self.hidden_size = hidden_size
         self.output_size = output_size
         self.fc1 = linear(input_size,hidden_size)
-        self.relu = relu()
+        self.relu = ReLU()
         self.fc2 = linear(hidden_size,output_size)
         self.H = 0
         self.Z = 0
