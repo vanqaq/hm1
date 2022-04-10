@@ -41,8 +41,8 @@ for hidden_size in hidden__size_list:
             print(' ')
             print('hidden_size:{},lr:{},l2:{}'.format(hidden_size,lr,l2))
             
-            train_iter = MydataLoader(x_train,y_train,batch_size)
-            test_iter = MydataLoader(x_test,y_test,batch_size) 
+            train_iter = Mydataloader(x_train,y_train,batch_size)
+            test_iter = Mydataloader(x_test,y_test,batch_size) 
             network = twolayers_mlp(num_input,num_hidden,num_output,lr,l2)
             
             ce_train = []
