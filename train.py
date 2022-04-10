@@ -60,7 +60,7 @@ for hidden_size in hidden__size_list:
                 network.step(grad)
                 
                 ce_train.append(l.item())
-                acc, ce = validate(test_iter, network)
+                acc, ce = validation(test_iter, network)
                 ce_test.append(ce.item())
                 accuracy.append(acc.item())
                 network.lr_decay(iteration)
