@@ -18,7 +18,7 @@ class Mydataloader(object):
     def __next__(self):
         self.num += self.batch_size
         if self.num <= self.len:
-            sample = self.seq[self.num:(self.num)]
+            sample = self.seq[self.num-self.batch_size:(self.num)]
             self.data = self.x[sample]
             self.label = self.y[sample]
             return self.data, self.label
