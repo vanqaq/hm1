@@ -62,10 +62,10 @@ class twolayers_mlp(object):
         self.fc1.load_state_dict(param[:2])
         self.fc2.load_state_dict(param[2:])
         
-    def backward(self,x,y):
+    def backward(self,X,y):
         grad = [0]*4
-        for i in range(len(x)):
-            x = x[i]
+        for i in range(len(X)):
+            x = X[i]
             z = self.Z[i]
             k = self.K[i]
             k_diag = np.diag(k)
