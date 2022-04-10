@@ -3,7 +3,7 @@ Type "help", "copyright", "credits" or "license()" for more information.
 #model
 import numpy as np
 
-class Linear(object):
+class linear(object):
     def __init__(self, input_size, output_size):
         self.w = cp.random.normal(loc = 0, scale = 0.01, size = (input_size, output_size))
         self.b = cp.zeros((1, output_size))
