@@ -26,16 +26,17 @@ x_train = normalize(x_train)
 x_test = normalize(x_test)
 
 input_size = 28*28
-hidden_size_list = [512,256,128]
+hidden_size_list = [256,128]
 output_size = 10
-lr_list = [0.2,0.1]
+lr_list = [0.1, 0.01]
 l2_list = [1e-04,5e-04]
 
-batch_size = 32
+epoch = 1
+batch_size = 64
 
-d = []
+result = []
 
-for hidden_size in hidden__size_list:
+for hidden_size in hidden_size_list:
     for lr in lr_list:
         for l2 in l2_list:
             print(' ')
@@ -45,46 +46,44 @@ for hidden_size in hidden__size_list:
             test_iter = Mydataloader(x_test,y_test,batch_size) 
             network = twolayers_mlp(input_size,hidden_size,output_size,lr,l2)
             
-            ce_train = []
-            ce_test = []
+            train_loss=[]
+            test_loss=[]
             accuracy = []
     
             for iteration,data in enumerate(train_iter):
                 iteration += 1
                 x,y = data
-                x = np.asarray(x)
-                y = np.asarray(y)
                 y_hat = network(x)
-                l = CrossEntropyLoss(y_hat,y)
-                grad = network.backward(x,y)
-                network.step(grad)
+                l = network.softmax.get_loss(y)
+                network.backward()
+                network.update(lr)
                 
-                ce_train.append(l.item())
-                acc, ce = validation(test_iter, network)
-                ce_test.append(ce.item())
+                train_loss.append(l.item())
+                acc, test_l = validation(test_iter, network)
+                test_loss.append(test_l.item())
                 accuracy.append(acc.item())
                 network.lr_decay(iteration)
                 
-                if iteration%10 == 0:
-                    print('iteration:{},loss:{},accuracy:{}'.format(iteration,ce,acc))
+                if iteration%100 == 0:
+                    print('iteration:{},loss:{},accuracy:{}'.format(iteration,test_l,acc))
             
-            np.save(r'C:\Users\13693\Desktop\mlnn\hm1\param_'+str(hidden_size)+'_'+str(lr)+'_'+str(l2)+'.npy',network.parameters())
-            num = list(range(len(ce_train)))
+            network.save_model(r'C:\Users\13693\Desktop\mlnn\hm1\mlp2-{}hidden-{}lr-{}l2.npy'.format(hidden_size, lr, l2)
+            num = list(range(len(train_loss)))
             plt.figure(figsize=(6,6),dpi=100)
-            plt.plot(num,ce_train,label='trainset loss')
-            plt.plot(num,ce_test,label = 'testset loss')
+            plt.plot(num,train_loss,label='trainset loss')
+            plt.plot(num,test_loss,label = 'testset loss')
             plt.xlabel('iteration')
-            plt.ylabel('CrossEntropyLoss')
+            plt.ylabel('Loss')
             plt.legend()
-            plt.savefig(r'C:\Users\13693\Desktop\mlnn\hm1\loss_'+str(hidden_size)+'_'+str(lr)+'_'+str(l2)+'.png')
+            plt.savefig(r'C:\Users\13693\Desktop\mlnn\hm1\loss_{}_{}_{}.png'.format(hidden_size,lr,l2))
             
             plt.figure(figsize=(6,6),dpi=100)
             plt.plot(num,accuracy)
             plt.xlabel('iteration')
             plt.ylabel('testset accuracy')
-            plt.savefig(r'C:\Users\13693\Desktop\mlnn\hm1\accuracy_'+str(hidden_size)+'_'+str(lr)+'_'+str(l2)+'.png')
+            plt.savefig(r'C:\Users\13693\Desktop\mlnn\hm1\acc_{}_{}_{}.png'.format(hidden_size,lr,l2))
             
-            d.append([hidden_size,lr,l2,acc])
+            result.append([hidden_size,lr,l2,acc])
             
-df = pd.DataFrame(d,columns=['hidden_size','lr','l2','accuracy'])
+df = pd.DataFrame(result,columns=['hidden_size','lr','l2','accuracy'])
 df.to_csv(r'C:\Users\13693\Desktop\mlnn\hm1\result.csv',index=False)
