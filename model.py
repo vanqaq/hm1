@@ -32,6 +32,8 @@ class linear(object):
         return self.w,self.b
         
 class ReLU(object):
+    def __init__(self):
+        pass
     def forward(self, x):
         self.x = x
         return np.maximum(0, self.x)
